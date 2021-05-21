@@ -55,6 +55,25 @@
     }
 
     /* Mine starts here */
+    #player-scores {
+      height: 8vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: red;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    
+    .player {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 5px 20px;
+      width: 100px;
+      height: 40px;
+      border-radius: 10%;
+      background-color: turquoise;
+    }
 
     #board {
       margin: 10% auto;
@@ -68,11 +87,6 @@
       width: 500px;
     }
 
-    #player-scores {
-      background-color: red;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
     .grid-cell {
       background-color: white;
       text-align: center;
@@ -82,8 +96,8 @@
 </head>
 <body>
   <div id="player-scores">
-    <div class="player">X</div>
-    <div class="player">O</div>
+    <div class="player"><span>X</span></div>
+    <div class="player"><span>O</span></div>
   </div>
   <div id="board">
     <div class="grid-cell"></div>
