@@ -17,6 +17,7 @@ const game = (() => {
     playerBtns.forEach(btn => {
       btn.removeEventListener('click', game.choosePlayer);
     });
+    gameBoard.activateBoard();
   }
   const changePlayer = () => {
     player === 'X'? player = 'O': player = 'X';
@@ -40,12 +41,29 @@ const game = (() => {
         }
       }
       if (winner.filter(Boolean).length === 3) {
-        console.log(prop);
+        declareWinner(combos[prop]);
+        break;
+      } else if (gameBoard.tictacs.filter(Boolean).length === 9) {
+        declareDraw();
         break;
       } else {
         winner = ['','',''];
       }
     }
+  }
+  const declareWinner = (combo) => {
+    combo.forEach(index => {
+      const div = document.querySelector(`div[data-index="${index}"]`);
+      div.classList.add('highlight');
+    });
+    gameBoard.openModal();
+    const text = document.getElementById('modal').querySelector('span');
+    text.innerHTML = `${player} wins!`;
+  }
+  const declareDraw = () => {
+    gameBoard.openModal();
+    const text = document.getElementById('modal').querySelector('span');
+    text.innerHTML = 'It\'s a draw';
   }
   return {playerTurn, choosePlayer, changePlayer, checkForWinner};
 })();
@@ -64,12 +82,23 @@ const gameBoard = (() => {
     let index = e.target.dataset.index;
     tictacs[index] = e.target.innerHTML;
   }
-  return {tictacs, placeMarker};
+  const activateBoard = () => {
+    cells.forEach(cell => {
+  cell.addEventListener('click', gameBoard.placeMarker);
+  });
+  }
+  const openModal = () => {
+    const modal = document.getElementById('modal');
+    modal.style.display = 'flex';
+  }
+  const closeModal = () => {
+    const modal = document.getElementById('modal');
+    modal.style.display = 'none';
+  }
+  return {tictacs, placeMarker, activateBoard, openModal, closeModal};
 })();
 
-cells.forEach(cell => {
-  cell.addEventListener('click', gameBoard.placeMarker);
-});
+
 
 playerBtns.forEach(btn => {
   btn.addEventListener('click', game.choosePlayer);

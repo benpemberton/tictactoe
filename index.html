@@ -82,7 +82,7 @@
       grid-template-rows: 1fr 1fr 1fr;
       grid-gap: 2px;
       background-color: black;
-      color:black;
+      color: black;
       height: 500px;
       width: 500px;
     }
@@ -90,7 +90,27 @@
     .grid-cell {
       background-color: white;
       text-align: center;
-      
+    }
+
+    .highlight {
+      color: green;
+    }
+
+    #modal {
+      display: none; 
+      position: fixed;
+      z-index: 99;
+      background-color: rgba(0, 0, 0, 0.5);
+      height: 500px;
+      width: 500px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #modal span {
+      color: white;
+      font-size: 5em;
+      z-index: 100;
     }
   </style>
 </head>
@@ -109,7 +129,9 @@
     <div class="grid-cell" data-index="6"></div>
     <div class="grid-cell" data-index="7"></div>
     <div class="grid-cell" data-index="8"></div>
+    <div id="modal"><span></span></div>
   </div>
+  
   <script src="script.js"></script>
 </body>
 </html>
