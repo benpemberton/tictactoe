@@ -71,8 +71,12 @@ const game = (() => {
 const gameBoard = (() => {
   let tictacs = [];
   const placeMarker = (e) => {
+    const nought = document.createElement('img');
+    nought.src = "noughts.png";
+    const cross = document.createElement('img');
+    cross.src = "cross.png";
     if (e.target.innerHTML === '') {
-      e.target.innerHTML = game.playerTurn();
+      game.playerTurn() === 'X'? e.target.appendChild(cross): e.target.appendChild(nought);
       updateArray(e);
       game.checkForWinner();
       game.changePlayer();
@@ -80,7 +84,7 @@ const gameBoard = (() => {
   }
   const updateArray = (e) => {
     let index = e.target.dataset.index;
-    tictacs[index] = e.target.innerHTML;
+    tictacs[index] = game.playerTurn();
   }
   const activateBoard = () => {
     cells.forEach(cell => {
