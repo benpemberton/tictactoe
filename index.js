@@ -19,16 +19,16 @@ const game = (() => {
     playerBtns.forEach(btn => {
       btn.removeEventListener('click', game.choosePlayer);
     });
-    player1 = Player(getPlayerName('x'));
-    player2 = Player(getPlayerName('o'));
+    player1 = Player(getPlayerName('X'));
+    player2 = Player(getPlayerName('O'));
     disableInputs();
-    console.log(player1);
-    console.log(player2);
     gameBoard.activateBoard();
   }
   const getPlayerName = (marker) => {
+    let name;
     const input = document.querySelector(`#${marker}-name`);
-    return input.value;
+    input.value === ''? name = marker: name = input.value;
+    return name;
   }
   const changePlayer = () => {
     player === 'X'? player = 'O': player = 'X';
