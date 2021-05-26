@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg"
-     width="26.455mm" height="26.1023mm"
+     width="75px" height="74px"
      viewBox="0 0 75 74">
   <path id="Selection"
-        fill="none" stroke="black" stroke-width="1"
+        fill="black" stroke="black" stroke-width="1"
         d="M 19.12,12.75
            C 24.50,16.62 23.25,15.55 25.83,17.77
              27.31,19.03 32.29,23.50 33.71,24.06
