@@ -9,6 +9,8 @@ const Player = (name) => {
 
 const game = (() => {
   let player = undefined;
+  let player1;
+  let player2;
   const playerTurn = () => {
     return player;
   }
@@ -17,7 +19,16 @@ const game = (() => {
     playerBtns.forEach(btn => {
       btn.removeEventListener('click', game.choosePlayer);
     });
+    player1 = Player(getPlayerName('x'));
+    player2 = Player(getPlayerName('o'));
+    disableInputs();
+    console.log(player1);
+    console.log(player2);
     gameBoard.activateBoard();
+  }
+  const getPlayerName = (marker) => {
+    const input = document.querySelector(`#${marker}-name`);
+    return input.value;
   }
   const changePlayer = () => {
     player === 'X'? player = 'O': player = 'X';
@@ -58,12 +69,22 @@ const game = (() => {
     });
     gameBoard.openModal();
     const text = document.getElementById('modal').querySelector('span');
-    text.innerHTML = `${player} wins!`;
+    if (player === 'X') {
+      text.innerHTML = `${player1.name} wins!`;
+    } else {
+     text.innerHTML = `${player2.name} wins!`;
+    }
   }
   const declareDraw = () => {
     gameBoard.openModal();
     const text = document.getElementById('modal').querySelector('span');
     text.innerHTML = 'It\'s a draw';
+  }
+  const disableInputs = () => {
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+      input.setAttribute('readonly', 'readonly')
+    });
   }
   return {playerTurn, choosePlayer, changePlayer, checkForWinner};
 })();
