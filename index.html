@@ -88,12 +88,26 @@
     }
 
     .grid-cell {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       background-color: white;
-      text-align: center;
+    }
+    
+    #Selection {
+      transform: translate(25%, 25%);
+      transform-origin: center;
     }
 
     .highlight {
-      fill: green;
+      animation: 1s highlight 0.1s forwards;
+    }
+
+    @keyframes highlight {
+      100% {
+        fill: green;
+        transform: scale(1.3) translate(25%, 25%);
+      }
     }
 
     #modal {
