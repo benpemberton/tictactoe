@@ -154,8 +154,6 @@ const gameBoard = (() => {
   const makeSVGElement = () => {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.classList.add('marker');
-    // svg.setAttribute('height', '75%');
-    // svg.setAttribute('width', '75%');
     svg.setAttribute('viewBox', '0, 0, 150, 150')
     return svg;
   }

@@ -56,8 +56,9 @@
 
     /* Mine starts here */
     #player-scores {
-      height: 8vh;
-      display: flex;
+      height: 13vh;
+      display: grid;
+      grid-template-columns: 1fr 30% 5% 30% 1fr;
       justify-content: center;
       align-items: center;
       background-color: red;
@@ -65,14 +66,23 @@
     }
     
     .player {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 5px 20px;
+      margin: auto;
       width: 100px;
       height: 40px;
       border-radius: 10%;
       background-color: turquoise;
+    }
+
+    #x-name, #x-btn {
+      grid-column: 2 / 3;
+    }
+
+    #o-name, #o-btn {
+      grid-column: 4 / 5;
+    }
+
+    #o-name {
+      grid-row: 1 / 2;
     }
 
     #board {
@@ -130,8 +140,10 @@
 </head>
 <body>
   <div id="player-scores">
-    <button class="player">X</button>
-    <button class="player">O</button>
+    <input id="x-name" type="text" name="title" placeholder="Player name">
+    <button id="x-btn" class="player">X</button>
+    <input id="o-name" type="text" name="title" placeholder="Player name">
+    <button id="o-btn" class="player">O</button>
   </div>
   <div id="board">
     <div class="grid-cell" data-index="0"></div>
