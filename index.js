@@ -21,6 +21,7 @@ const game = (() => {
     });
     player1 = Player(getPlayerName('X'));
     player2 = Player(getPlayerName('O'));
+    toggleCurrentPlayer();
     disableInputs();
     gameBoard.activateBoard();
   }
@@ -32,6 +33,10 @@ const game = (() => {
   }
   const changePlayer = () => {
     player === 'X'? player = 'O': player = 'X';
+  }
+  const toggleCurrentPlayer = () => {
+    const btn = document.querySelector(`#${player}-btn`);
+    btn.classList.toggle('current');
   }
   const checkForWinner = () => {
     let winner = ['','',''];
@@ -45,7 +50,10 @@ const game = (() => {
       dialeft: [0, 4, 8],
       diaright: [2, 4, 6]
     }
+    let i = 0;
+    const length = Object.keys(combos).length;
     for (const prop in combos) {
+      let last = i === length - 1;
       for (let i = 0; i < combos[prop].length; i++) {
         if (gameBoard.tictacs[combos[prop][i]] === player) {
           winner[i] = true;
@@ -54,7 +62,7 @@ const game = (() => {
       if (winner.filter(Boolean).length === 3) {
         declareWinner(combos[prop]);
         break;
-      } else if (gameBoard.tictacs.filter(Boolean).length === 9) {
+      } else if (last && gameBoard.tictacs.filter(Boolean).length === 9) {
         declareDraw();
         break;
       } else {
