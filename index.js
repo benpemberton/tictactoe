@@ -21,8 +21,9 @@ const game = (() => {
     });
     player1 = Player(getPlayerName('X'));
     player2 = Player(getPlayerName('O'));
-    toggleCurrentPlayer();
+    toggleCurrentPlayer(e);
     disableInputs();
+    displayScores();
     gameBoard.activateBoard();
   }
   const getPlayerName = (marker) => {
@@ -31,15 +32,23 @@ const game = (() => {
     input.value === ''? name = marker: name = input.value;
     return name;
   }
-  const changePlayer = () => {
+  const changePlayer = (e) => {
     player === 'X'? player = 'O': player = 'X';
   }
-  const toggleCurrentPlayer = () => {
-    const btn = document.querySelector(`#${player}-btn`);
-    btn.classList.toggle('current');
+  const toggleCurrentPlayer = (e) => {
+    if (e) {
+      const btn = document.querySelector(`#${player}-btn`);
+      btn.classList.toggle('current');
+    } else {
+      const btns = document.querySelectorAll('.player');
+      btns.forEach(btn => {
+        btn.classList.toggle('current');
+      });
+    }
   }
   const checkForWinner = () => {
     let winner = ['','',''];
+    let winningCombos;
     const combos = {
       row1: [0, 1, 2],
       row2: [3, 4, 5],
@@ -50,25 +59,24 @@ const game = (() => {
       dialeft: [0, 4, 8],
       diaright: [2, 4, 6]
     }
-    let i = 0;
-    const length = Object.keys(combos).length;
     for (const prop in combos) {
-      let last = i === length - 1;
       for (let i = 0; i < combos[prop].length; i++) {
         if (gameBoard.tictacs[combos[prop][i]] === player) {
           winner[i] = true;
         }
       }
       if (winner.filter(Boolean).length === 3) {
-        declareWinner(combos[prop]);
-        break;
-      } else if (last && gameBoard.tictacs.filter(Boolean).length === 9) {
-        declareDraw();
-        break;
+        winningCombos? winningCombos = winningCombos.concat(combos[prop]): winningCombos = combos[prop];
+        winner = ['','',''];
       } else {
         winner = ['','',''];
       }
     }
+    if (winningCombos) {
+      declareWinner(winningCombos);
+    } else if (gameBoard.tictacs.filter(Boolean).length === 9) {
+      declareDraw();
+    }   
   }
   const declareWinner = (combo) => {
     combo.forEach(index => {
@@ -79,9 +87,12 @@ const game = (() => {
     const text = document.getElementById('modal').querySelector('span');
     if (player === 'X') {
       text.innerHTML = `${player1.name} wins!`;
+      player1.points += 1;
     } else {
      text.innerHTML = `${player2.name} wins!`;
+     player2.points += 1;
     }
+    displayScores();
   }
   const declareDraw = () => {
     gameBoard.openModal();
@@ -94,7 +105,17 @@ const game = (() => {
       input.setAttribute('readonly', 'readonly')
     });
   }
-  return {playerTurn, choosePlayer, changePlayer, checkForWinner};
+  const displayScores = () => {
+    const scoreDivs = document.querySelectorAll('.player-scores');
+    scoreDivs.forEach(div => {
+      if (div.id === 'player1-score') {
+        div.querySelector('span').innerHTML = player1.points;
+      } else {
+        div.querySelector('span').innerHTML = player2.points;
+      }
+    });
+  }
+  return {playerTurn, choosePlayer, changePlayer, checkForWinner, toggleCurrentPlayer};
 })();
 
 const gameBoard = (() => {
@@ -161,6 +182,7 @@ const gameBoard = (() => {
       updateArray(e);
       game.checkForWinner();
       game.changePlayer();
+      game.toggleCurrentPlayer();
     }
   }
   const updateArray = (e) => {

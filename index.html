@@ -55,7 +55,7 @@
     }
 
     /* Mine starts here */
-    #player-scores {
+    #header {
       height: 13vh;
       display: grid;
       grid-template-columns: 1fr 30% 5% 30% 1fr;
@@ -63,6 +63,14 @@
       align-items: center;
       background-color: #e6e6e6;
       font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .player-scores {
+      display: flex;
+      justify-content:center;
+      align-items: center;
+      font-size: 3em;
+      font-family: Helvetica;
     }
 
     button {
@@ -73,15 +81,18 @@
     
     .player {
       margin: auto;
-      width: 100px;
+      width: 80px;
       height: 40px;
       border-radius: 10%;
-      background-color: white;
+      /* background-color: white; */
+      background-image: linear-gradient(to bottom, white, white);
+      transition: all linear 0.4s;
     }
 
-    .current {
-      box-shadow: 0px 1px 3px 1px grey;
-      background-image: linear-gradient(to bottom, white 73%, #45b566 78%)
+    .player.current {
+      /* box-shadow: 0px 1px 3px 1px grey; */
+      background-image: linear-gradient(to bottom, white 73%, #45b566 78%);
+      width: 100px;
     }
 
     #X-name, #X-btn {
@@ -170,13 +181,13 @@
   </style>
 </head>
 <body>
-  <div id="player-scores">
-    <div id="player1-score"></div>
+  <div id="header">
+    <div id="player1-score" class="player-scores"><span></span></div>
     <input id="X-name" type="text" name="title" placeholder="Player name">
     <button id="X-btn" class="player">X</button>
     <input id="O-name" type="text" name="title" placeholder="Player name">
     <button id="O-btn" class="player">O</button>
-    <div id="player2-score"></div>
+    <div id="player2-score" class="player-scores"><span></span></div>
   </div>
   <div id="board">
     <div class="grid-cell" data-index="0"></div>
