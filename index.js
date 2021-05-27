@@ -49,6 +49,7 @@ const game = (() => {
   const checkForWinner = () => {
     let winner = ['','',''];
     let winningCombos;
+
     const combos = {
       row1: [0, 1, 2],
       row2: [3, 4, 5],
@@ -59,6 +60,7 @@ const game = (() => {
       dialeft: [0, 4, 8],
       diaright: [2, 4, 6]
     }
+
     for (const prop in combos) {
       for (let i = 0; i < combos[prop].length; i++) {
         if (gameBoard.tictacs[combos[prop][i]] === player) {
@@ -72,32 +74,54 @@ const game = (() => {
         winner = ['','',''];
       }
     }
+
     if (winningCombos) {
       declareWinner(winningCombos);
     } else if (gameBoard.tictacs.filter(Boolean).length === 9) {
       declareDraw();
-    }   
+    } else {
+      changePlayer();
+      toggleCurrentPlayer();
+    }
   }
+
   const declareWinner = (combo) => {
     combo.forEach(index => {
       const div = document.querySelector(`div[data-index="${index}"]`);
       div.querySelector('path').classList.add('highlight');
     });
-    gameBoard.openModal();
-    const text = document.getElementById('modal').querySelector('span');
-    if (player === 'X') {
-      text.innerHTML = `${player1.name} wins!`;
-      player1.points += 1;
-    } else {
-     text.innerHTML = `${player2.name} wins!`;
-     player2.points += 1;
+    const highlightedDiv = document.querySelector('.highlight');
+    highlightedDiv.onanimationend = () => {
+      gameBoard.openModal();
+      const text = document.getElementById('modal').querySelector('span');
+      if (player === 'X') {
+        text.innerHTML = `${player1.name} wins!`;
+        player1.points += 1;
+      } else {
+      text.innerHTML = `${player2.name} wins!`;
+      player2.points += 1;
+      }
+      displayScores();
+      const nextRoundBtn = document.querySelector('#next-btn');
+      nextRoundBtn.addEventListener('click', nextRound(true));
     }
-    displayScores();
   }
   const declareDraw = () => {
     gameBoard.openModal();
     const text = document.getElementById('modal').querySelector('span');
     text.innerHTML = 'It\'s a draw';
+    const nextRoundBtn = document.querySelector('#next-btn');
+    nextRoundBtn.addEventListener('click', nextRound(false));
+  }
+  const nextRound = (win) => {
+    if (win) {
+      gameBoard.resetBoard();
+      gameBoard.closeModal();
+    } else {
+      changePlayer();
+      gameBoard.resetBoard();
+      gameBoard.closeModal();
+    }
   }
   const disableInputs = () => {
     const inputs = document.querySelectorAll('input');
@@ -181,8 +205,6 @@ const gameBoard = (() => {
       game.playerTurn() === 'X'? e.target.appendChild(cross): e.target.appendChild(nought);
       updateArray(e);
       game.checkForWinner();
-      game.changePlayer();
-      game.toggleCurrentPlayer();
     }
   }
   const updateArray = (e) => {
@@ -191,8 +213,14 @@ const gameBoard = (() => {
   }
   const activateBoard = () => {
     cells.forEach(cell => {
-  cell.addEventListener('click', gameBoard.placeMarker);
-  });
+      cell.addEventListener('click', gameBoard.placeMarker);
+    });
+  }
+  const resetBoard = () => {
+    const cells = document.querySelectorAll('.grid-cell');
+    cells.forEach(cell => {
+      cell.innerHTML = '';
+    });
   }
   const openModal = () => {
     const modal = document.getElementById('modal');
@@ -208,7 +236,7 @@ const gameBoard = (() => {
     svg.setAttribute('viewBox', '0, 0, 150, 150')
     return svg;
   }
-  return {tictacs, placeMarker, activateBoard, openModal, closeModal};
+  return {tictacs, placeMarker, activateBoard, resetBoard, openModal, closeModal};
 })();
 
 

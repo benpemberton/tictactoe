@@ -132,7 +132,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       grid-template-rows: 1fr 1fr 1fr;
-      grid-gap: 2px;
+      grid-gap: 5px;
       background-color: black;
       color: black;
       height: 500px;
@@ -164,6 +164,7 @@
 
     #modal {
       display: none; 
+      flex-direction: column;
       position: absolute;
       z-index: 99;
       background-color: rgba(0, 0, 0, 0.7);
@@ -174,9 +175,16 @@
     }
 
     #modal span {
+      position: absolute;
       color: white;
       font-size: 5em;
       z-index: 100;
+    }
+
+    #next-btn {
+      height: 50px;
+      width: 100px;
+      margin-top: 50%;
     }
   </style>
 </head>
@@ -199,7 +207,10 @@
     <div class="grid-cell" data-index="6"></div>
     <div class="grid-cell" data-index="7"></div>
     <div class="grid-cell" data-index="8"></div>
-    <div id="modal"><span></span></div>
+    <div id="modal">
+      <span></span>
+      <button id="next-btn">Next round</button>
+    </div>
   </div>
   
   <script src="index.js"></script>
