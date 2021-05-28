@@ -55,10 +55,21 @@
     }
 
     /* Mine starts here */
+    body {
+      background-color: black;
+      display: flex;
+      justify-content: center
+    }
+
+    #game-wrap {
+      background-color: #e6e6e6;
+      width: 70vw;
+    }
+
     #header {
       height: 13vh;
       display: grid;
-      grid-template-columns: 1fr 30% 5% 30% 1fr;
+      grid-template-columns: 1fr 30% 10% 30% 1fr;
       justify-content: center;
       align-items: center;
       background-color: #e6e6e6;
@@ -84,13 +95,11 @@
       width: 80px;
       height: 40px;
       border-radius: 10%;
-      /* background-color: white; */
       background-image: linear-gradient(to bottom, white, white);
       transition: all linear 0.4s;
     }
 
     .player.current {
-      /* box-shadow: 0px 1px 3px 1px grey; */
       background-image: linear-gradient(to bottom, white 73%, #45b566 78%);
       width: 100px;
     }
@@ -103,8 +112,24 @@
       grid-column: 4 / 5;
     }
 
+    #X-name, #O-name {
+      margin: 0 10%;
+      height: 40%
+      
+    }
+
+    #X-btn, #O-btn {
+      font-size: 1.5em;
+    }
+
     #O-name {
       grid-row: 1 / 2;
+    }
+
+    #reset {
+      width: 70px;
+      height : 25px;
+      margin: 0 20%;
     }
 
     #player1-score {
@@ -121,10 +146,6 @@
       background-color: white;
       height: 100%;
       margin-left: 20px;
-    }
-
-    body {
-      background-color: #e6e6e6;
     }
 
     #board {
@@ -189,30 +210,32 @@
   </style>
 </head>
 <body>
-  <div id="header">
-    <div id="player1-score" class="player-scores"><span></span></div>
-    <input id="X-name" type="text" name="title" placeholder="Player name">
-    <button id="X-btn" class="player">X</button>
-    <input id="O-name" type="text" name="title" placeholder="Player name">
-    <button id="O-btn" class="player">O</button>
-    <div id="player2-score" class="player-scores"><span></span></div>
-  </div>
-  <div id="board">
-    <div class="grid-cell" data-index="0"></div>
-    <div class="grid-cell" data-index="1"></div>
-    <div class="grid-cell" data-index="2"></div>
-    <div class="grid-cell" data-index="3"></div>
-    <div class="grid-cell" data-index="4"></div>
-    <div class="grid-cell" data-index="5"></div>
-    <div class="grid-cell" data-index="6"></div>
-    <div class="grid-cell" data-index="7"></div>
-    <div class="grid-cell" data-index="8"></div>
-    <div id="modal">
-      <span></span>
-      <button id="next-btn">Next round</button>
+  <div id="game-wrap">
+    <div id="header">
+      <div id="player1-score" class="player-scores"><span></span></div>
+      <input id="X-name" type="text" name="title" placeholder="Player name">
+      <button id="X-btn" class="player">X</button>
+      <div><button id="reset">Reset</button></div>
+      <input id="O-name" type="text" name="title" placeholder="Player name">
+      <button id="O-btn" class="player">O</button>
+      <div id="player2-score" class="player-scores"><span></span></div>
+    </div>
+    <div id="board">
+      <div class="grid-cell" data-index="0"></div>
+      <div class="grid-cell" data-index="1"></div>
+      <div class="grid-cell" data-index="2"></div>
+      <div class="grid-cell" data-index="3"></div>
+      <div class="grid-cell" data-index="4"></div>
+      <div class="grid-cell" data-index="5"></div>
+      <div class="grid-cell" data-index="6"></div>
+      <div class="grid-cell" data-index="7"></div>
+      <div class="grid-cell" data-index="8"></div>
+      <div id="modal">
+        <span></span>
+        <button id="next-btn">Next round</button>
+      </div>
     </div>
   </div>
-  
   <script src="index.js"></script>
 </body>
 </html>
