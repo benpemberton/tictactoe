@@ -49,7 +49,6 @@ const game = (() => {
   const checkForWinner = () => {
     let winner = ['','',''];
     let winningCombos;
-
     const combos = {
       row1: [0, 1, 2],
       row2: [3, 4, 5],
@@ -103,22 +102,24 @@ const game = (() => {
       }
       displayScores();
       const nextRoundBtn = document.querySelector('#next-btn');
-      nextRoundBtn.addEventListener('click', nextRound(true));
+      nextRoundBtn.addEventListener('click', nextRound.bind(declareWinner),{once:true});
     }
+
   }
   const declareDraw = () => {
     gameBoard.openModal();
     const text = document.getElementById('modal').querySelector('span');
     text.innerHTML = 'It\'s a draw';
     const nextRoundBtn = document.querySelector('#next-btn');
-    nextRoundBtn.addEventListener('click', nextRound(false));
+    nextRoundBtn.addEventListener('click', nextRound.bind(declareDraw),{once:true});
   }
-  const nextRound = (win) => {
-    if (win) {
+  function nextRound() {
+    if (this === declareWinner) {
       gameBoard.resetBoard();
       gameBoard.closeModal();
-    } else {
+    } else if (this === declareDraw) {
       changePlayer();
+      toggleCurrentPlayer();
       gameBoard.resetBoard();
       gameBoard.closeModal();
     }
@@ -209,7 +210,7 @@ const gameBoard = (() => {
   }
   const updateArray = (e) => {
     let index = e.target.dataset.index;
-    tictacs[index] = game.playerTurn();
+    gameBoard.tictacs[index] = game.playerTurn();
   }
   const activateBoard = () => {
     cells.forEach(cell => {
@@ -217,6 +218,7 @@ const gameBoard = (() => {
     });
   }
   const resetBoard = () => {
+    gameBoard.tictacs = [];
     const cells = document.querySelectorAll('.grid-cell');
     cells.forEach(cell => {
       cell.innerHTML = '';
