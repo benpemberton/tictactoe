@@ -1,13 +1,11 @@
-const cells = document.querySelectorAll('.grid-cell');
-
-const playerBtns = document.querySelectorAll('.player');
-
 const Player = (name) => {
   let points = 0;
   return {name, points}
 }
 
 const game = (() => {
+  const playerBtns = document.querySelectorAll('.player');
+
   let player = undefined;
   let player1;
   let player2;
@@ -207,6 +205,7 @@ const game = (() => {
 
 const gameBoard = (() => {
   let tictacs = [];
+  const cells = document.querySelectorAll('.grid-cell');
   const placeMarker = (e) => {
     const nought = makeSVGElement();
     nought.innerHTML = 
@@ -286,7 +285,6 @@ const gameBoard = (() => {
   }
   const resetBoard = () => {
     gameBoard.tictacs = [];
-    const cells = document.querySelectorAll('.grid-cell');
     cells.forEach(cell => {
       cell.innerHTML = '';
     });
@@ -308,13 +306,14 @@ const gameBoard = (() => {
   return {tictacs, placeMarker, activateBoard, deactivateBoard, resetBoard, openModal, closeModal};
 })();
 
+window.onload = () => {
+  const playerBtns = document.querySelectorAll('.player');
+  playerBtns.forEach(btn => {
+    btn.addEventListener('click', game.choosePlayer);
+  });
 
+  const resetBtn = document.querySelector('#reset');
+  resetBtn.addEventListener('click', game.resetGame);
 
-playerBtns.forEach(btn => {
-  btn.addEventListener('click', game.choosePlayer);
-});
-
-const resetBtn = document.querySelector('#reset');
-resetBtn.addEventListener('click', game.resetGame);
-
-game.introText();
+  game.introText();
+}
