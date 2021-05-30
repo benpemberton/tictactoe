@@ -11,9 +11,11 @@ const game = (() => {
   let player = undefined;
   let player1;
   let player2;
+
   const playerTurn = () => {
     return player;
   }
+
   const choosePlayer = (e) => {
     player = e.target.textContent;
     playerBtns.forEach(btn => {
@@ -25,16 +27,22 @@ const game = (() => {
     disableInputs();
     displayScores();
     gameBoard.activateBoard();
+    gameBoard.closeModal();
+    const nextRoundBtn = document.querySelector('#next-btn');
+    nextRoundBtn.style.display = 'inline-block';
   }
+
   const getPlayerName = (marker) => {
     let name;
     const input = document.querySelector(`#${marker}-name`);
     input.value === ''? name = marker: name = input.value;
     return name;
   }
+
   const changePlayer = (e) => {
     player === 'X'? player = 'O': player = 'X';
   }
+
   const toggleCurrentPlayer = (e) => {
     if (e) {
       const btn = document.querySelector(`#${player}-btn`);
@@ -46,6 +54,7 @@ const game = (() => {
       });
     }
   }
+
   const checkForWinner = () => {
     let winner = ['','',''];
     let winningCombos;
@@ -104,8 +113,8 @@ const game = (() => {
       const nextRoundBtn = document.querySelector('#next-btn');
       nextRoundBtn.addEventListener('click', nextRound.bind(declareWinner),{once:true});
     }
-
   }
+
   const declareDraw = () => {
     gameBoard.openModal();
     const text = document.getElementById('modal').querySelector('span');
@@ -113,6 +122,7 @@ const game = (() => {
     const nextRoundBtn = document.querySelector('#next-btn');
     nextRoundBtn.addEventListener('click', nextRound.bind(declareDraw),{once:true});
   }
+
   function nextRound() {
     if (this === declareWinner) {
       gameBoard.resetBoard();
@@ -124,12 +134,56 @@ const game = (() => {
       gameBoard.closeModal();
     }
   }
+
+  const introText = () => {
+    const nextRoundBtn = document.querySelector('#next-btn');
+    nextRoundBtn.style.display = 'none';
+    const text = document.getElementById('modal').querySelector('span');
+    text.innerHTML = 'Enter player names and then pick a marker to start';
+    gameBoard.openModal();
+  }
+
+  const resetGame = () => {
+    player = undefined;
+    player1 = undefined;
+    player2 = undefined;
+    gameBoard.resetBoard();
+    resetInputs();
+    removeScores();
+    resetPlayerBtns();
+    gameBoard.deactivateBoard();
+    const modal = document.getElementById('modal');
+    if (modal.style.display === 'flex') {
+      gameBoard.closeModal();
+    }
+    playerBtns.forEach(btn => {
+      btn.addEventListener('click', game.choosePlayer);
+    });
+    introText();
+  }
+
   const disableInputs = () => {
     const inputs = document.querySelectorAll('input');
     inputs.forEach(input => {
-      input.setAttribute('readonly', 'readonly')
+      input.setAttribute('readonly', 'readonly');
     });
   }
+
+  const resetInputs = () => {
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+      input.removeAttribute('readonly');
+      input.value = '';
+    });
+  }
+
+  const resetPlayerBtns = () => {
+    const btns = document.querySelectorAll('.player');
+    btns.forEach(btn => {
+      btn.classList.remove('current');
+    });
+  }
+
   const displayScores = () => {
     const scoreDivs = document.querySelectorAll('.player-scores');
     scoreDivs.forEach(div => {
@@ -140,7 +194,15 @@ const game = (() => {
       }
     });
   }
-  return {playerTurn, choosePlayer, changePlayer, checkForWinner, toggleCurrentPlayer};
+
+  const removeScores = () => {
+    const scoreDivs = document.querySelectorAll('.player-scores');
+    scoreDivs.forEach(div => {
+      div.querySelector('span').innerHTML = '';
+    });
+  }
+
+  return {playerTurn, choosePlayer, changePlayer, checkForWinner, toggleCurrentPlayer, resetGame, introText};
 })();
 
 const gameBoard = (() => {
@@ -217,6 +279,11 @@ const gameBoard = (() => {
       cell.addEventListener('click', gameBoard.placeMarker);
     });
   }
+  const deactivateBoard = () => {
+    cells.forEach(cell => {
+      cell.removeEventListener('click', gameBoard.placeMarker);
+    });
+  }
   const resetBoard = () => {
     gameBoard.tictacs = [];
     const cells = document.querySelectorAll('.grid-cell');
@@ -238,7 +305,7 @@ const gameBoard = (() => {
     svg.setAttribute('viewBox', '0, 0, 150, 150')
     return svg;
   }
-  return {tictacs, placeMarker, activateBoard, resetBoard, openModal, closeModal};
+  return {tictacs, placeMarker, activateBoard, deactivateBoard, resetBoard, openModal, closeModal};
 })();
 
 
@@ -246,3 +313,8 @@ const gameBoard = (() => {
 playerBtns.forEach(btn => {
   btn.addEventListener('click', game.choosePlayer);
 });
+
+const resetBtn = document.querySelector('#reset');
+resetBtn.addEventListener('click', game.resetGame);
+
+game.introText();
